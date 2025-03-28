@@ -45,6 +45,8 @@ Sigue estos pasos para poner en marcha la aplicación en tu entorno local.
 
 ### Backend (Flask API)
 
+0. ** Abre una terminal en la raíz del proyecto.**
+
 1.  **Navega a la carpeta `backend`:**
     ```powershell
     cd backend
@@ -74,9 +76,72 @@ Sigue estos pasos para poner en marcha la aplicación en tu entorno local.
     *   La API estará disponible en `http://localhost:5000` (o el puerto que indique Flask).
     *   Al iniciar por primera vez, se creará la base de datos (`instance/database.db`) y un usuario administrador (`admin@example.com` / `adminpassword`).
 
+#### Crear Usuarios en el Backend (Flask Shell)
+
+Aunque los usuarios pueden registrarse a través de la API (`POST /api/register`), a veces es útil crear usuarios directamente en la base de datos para fines de prueba o desarrollo. Puedes hacerlo usando el shell interactivo de Flask.
+
+1.  **Abre una terminal** en la raíz del proyecto.
+2.  **Navega al directorio del backend:**
+    ```powershell
+    cd backend
+    ```
+3.  **Activa el entorno virtual:**
+    ```powershell
+    .\.venv\Scripts\Activate.ps1
+    ```
+4.  **Inicia el shell de Flask:**
+    ```powershell
+    flask shell
+    ```
+    Esto te dará un intérprete de Python con el contexto de la aplicación cargado.
+
+5.  **Dentro del shell de Flask, importa los módulos necesarios:**
+    ```python
+    from backend import db
+    from backend.models import User
+    # from werkzeug.security import generate_password_hash # No necesitas generate_password_hash directamente si usas el método set_password
+    ```
+
+6.  **Crea una instancia del nuevo usuario:**
+    ```python
+    # Ejemplo para crear un usuario normal
+    nuevo_usuario = User(
+        nombre_completo='Usuario De Prueba',
+        tipo_documento='CC',
+        numero_documento='123456789',
+        correo_electronico='prueba@example.com',
+        estado='activo',
+        es_admin=False
+    )
+    # Establece la contraseña usando el método seguro
+    nuevo_usuario.set_password('password123')
+    ```
+    *   Asegúrate de que `numero_documento` y `correo_electronico` sean únicos.
+    *   Usa `es_admin=True` si quieres crear otro administrador.
+
+7.  **Añade el usuario a la sesión de la base de datos:**
+    ```python
+    db.session.add(nuevo_usuario)
+    ```
+
+8.  **Guarda los cambios en la base de datos:**
+    ```python
+    db.session.commit()
+    ```
+    ¡Listo! El usuario ha sido creado.
+
+9.  **Sal del shell de Flask:**
+    ```python
+    exit()
+    ```
+
+**Nota:** Recuerda que al iniciar la aplicación Flask por primera vez, se crea automáticamente un usuario administrador con las credenciales `admin@example.com` / `adminpassword`.
+
+
 ### Frontend (React UI)
 
-1.  **Abre otra terminal.**
+1.  **Abre otra terminal en la raíz del proyecto.**
+
 2.  **Navega a la carpeta `frontend`:**
     ```powershell
     cd frontend
@@ -101,7 +166,7 @@ Sigue estos pasos para poner en marcha la aplicación en tu entorno local.
 
 Esta aplicación ha sido preparada con varios bugs intencionales para facilitar la práctica de pruebas.
 
-1.  **Revisa la Documentación de Bugs:** El archivo `BUGS_PARA_PRUEBAS.md` (que **no** debe estar en el repositorio Git) contiene una descripción detallada de cada bug, su ubicación en el código y sugerencias sobre qué tipos de pruebas podrían detectarlo. **Este archivo es tu guía principal para las pruebas.**
+1.  **Revisa la Documentación de Bugs:** El archivo `BUGS_PARA_PRUEBAS.md` (que **no** existe dentro del repositorio Git por temas de privacidad) contiene una descripción detallada de cada bug, su ubicación en el código y sugerencias sobre qué tipos de pruebas podrían detectarlo. **Este archivo es tu guía principal para las pruebas.**
 
 2.  **Ejecuta la Aplicación:** Ten ambos servidores (backend y frontend) corriendo como se describió anteriormente.
 
@@ -123,4 +188,4 @@ Esta aplicación ha sido preparada con varios bugs intencionales para facilitar 
 
 4.  **Diseña Casos de Prueba Formales:** Basándote en tu exploración y la documentación de bugs, diseña casos de prueba más estructurados (manuales o automatizados) para verificar sistemáticamente cada comportamiento esperado y no esperado.
 
-¡Feliz prueba! 
+Enjoy!
