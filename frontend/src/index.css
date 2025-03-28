@@ -1,0 +1,131 @@
+:root {
+  /* Paleta Pastel Morado y Verde */
+  --color-bg: #f8f7ff; /* Fondo muy claro, casi blanco con tinte morado */
+  --color-bg-alt: #e9e7f5; /* Fondo alternativo ligeramente más oscuro */
+  --color-text: #3a3a3a; /* Texto principal oscuro */
+  --color-primary: #a89fcf; /* Morado pastel principal */
+  --color-primary-dark: #8c7db8; /* Morado más oscuro para hover/activo */
+  --color-secondary: #a7d7c5; /* Verde pastel secundario */
+  --color-secondary-dark: #8cbba9; /* Verde más oscuro para hover/activo */
+  --color-accent: #f5d0f0; /* Acento rosa/lila pastel (opcional) */
+  --color-error: #e68e8e; /* Rojo pastel para errores */
+  --color-success: #a7d7ac; /* Verde pastel para éxito */
+  --color-border: #dcd9e8; /* Borde suave */
+
+  --font-family-sans: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --border-radius: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary-dark);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+a {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--color-secondary-dark);
+}
+
+button {
+  font-family: var(--font-family-sans);
+  padding: 0.75em 1.5em;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background-color: var(--color-primary);
+  color: white;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: var(--color-bg-alt);
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Estilos básicos para formularios */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  font-family: var(--font-family-sans);
+  padding: 0.75em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  width: 100%; /* Hacer que ocupen el ancho por defecto */
+  box-sizing: border-box; /* Para que padding no aumente el tamaño */
+  margin-bottom: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(168, 159, 207, 0.3); /* Sombra suave morada */
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-primary-dark);
+}
+
+/* Contenedor general para centrar contenido */
+.container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Utilidad para mensajes de error */
+.error-message {
+  color: var(--color-error);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Estilo base para formularios centrados */
+.form-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-border);
+}

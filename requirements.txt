@@ -1,0 +1,7 @@
+Flask>=2.0
+Flask-SQLAlchemy>=2.5
+Flask-WTF>=1.0
+Flask-Login>=0.5
+python-dotenv>=0.19
+Werkzeug>=2.0 # Werkzeug ahora está incluido con Flask, pero lo especificamos por claridad para el hashing
+Flask-CORS>=3.0
