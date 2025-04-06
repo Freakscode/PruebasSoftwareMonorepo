@@ -154,7 +154,13 @@ Aunque los usuarios pueden registrarse a través de la API (`POST /api/register`
     # yarn install
     ```
 
-4.  **Ejecuta el servidor de desarrollo Vite:**
+4.  **Creación de archivo de variables de entorno:**
+    creen en la carpeta de frontend un archivo llamado .env y le agruegan esta linea
+       ```powershell
+    VITE_API_BASE_URL=http://127.0.0.1:5000/api
+    ```
+  
+5.  **Ejecuta el servidor de desarrollo Vite:**
     ```powershell
     npm run dev
     # o si usas yarn:

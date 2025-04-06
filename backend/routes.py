@@ -291,3 +291,31 @@ def admin_toggle_user_status_api(user_id):
         db.session.rollback()
         print(f"Error al cambiar estado del usuario: {e}")
         return jsonify({'message': 'Error interno al cambiar el estado del usuario.'}), 500
+    
+@bp.route('/find-mail', methods=['GET'])
+def find_mail():
+    """Verifica si el correo electrónico existe."""
+    email = request.args.get('mail')
+    if not email:
+        return jsonify({'message': 'Correo electrónico requerido.'}), 400
+
+    user = User.query.filter_by(correo_electronico=email).first()
+    if user:
+        return jsonify({'exists': True}), 200
+    else:
+        return jsonify({'exists': False}), 200
+
+@bp.route('/reset-password', methods=['PATCH'])
+def update_pass():
+    """Actualiza la contraseña del usuario."""
+    data = request.get_json()
+    if not data or 'mail' not in data or 'password' not in data:
+        return jsonify({'message': 'Correo electrónico y contraseña requeridos.'}), 400
+
+    user = User.query.filter_by(correo_electronico=data['mail']).first()
+    if user:
+        user.set_password(data['password'])
+        db.session.commit()
+        return jsonify({'message': 'Contraseña actualizada exitosamente.'}), 200
+    else:
+        return jsonify({'message': 'Usuario no encontrado.'}), 404

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import apiClient from '../api/axiosConfig';
 import { useAuth } from '../context/AuthContext';
 
@@ -82,7 +82,9 @@ const LoginPage: React.FC = () => {
           {isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
         </button>
       </form>
-      
+      <div  className='link'>
+        <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+      </div>
     </div>
   );
 };
