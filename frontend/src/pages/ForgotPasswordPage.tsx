@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import apiClient from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
-const ForgotPassword: React.FC = () => {
+const ForgotPasswordPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -71,4 +71,4 @@ const ForgotPassword: React.FC = () => {
     );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordPage;
