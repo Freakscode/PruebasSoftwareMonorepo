@@ -6,8 +6,9 @@ import DashboardPage from './pages/DashboardPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPasswordPage';
+import ResetPassword from './pages/ResetPasswordPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   const { user, logout } = useAuth();
@@ -25,6 +26,7 @@ function App() {
       }}>
         <Link to="/">Inicio</Link>
         {!user && <Link to="/login">Login</Link>}
+        {!user && <Link to="/register">Registro</Link>}
         {user && !user.es_admin && <Link to="/dashboard">Mi Panel</Link>}
         {user && user.es_admin && <Link to="/admin/users">Admin Usuarios</Link>}
         {user && <button 
@@ -46,6 +48,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/reset-password" element={<ResetPassword/>} />
+          <Route path="/register" element={<RegisterPage/>} />
 
           {/* Rutas protegidas */}
 

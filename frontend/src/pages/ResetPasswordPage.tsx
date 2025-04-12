@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apiClient from '../api/axiosConfig';
 
-const ResetPassword: React.FC = () => {
+const ResetPasswordPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
@@ -71,4 +71,4 @@ const ResetPassword: React.FC = () => {
     );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;
