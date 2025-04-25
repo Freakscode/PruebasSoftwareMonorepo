@@ -119,6 +119,13 @@ label {
   margin-bottom: 1rem;
 }
 
+.successful-message {
+  color: var(--color-success);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
 /* Estilo base para formularios centrados */
 .form-container {
   max-width: 400px;
@@ -128,4 +135,17 @@ label {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   border: 1px solid var(--color-border);
+}
+
+.link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  
 }
