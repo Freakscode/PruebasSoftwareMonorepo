@@ -131,7 +131,7 @@ def login_api():
 @login_required
 def get_declarations():
     """Obtiene las declaraciones del usuario actual."""
-    declarations = Declaration.query.filter_by(author=current_user).order_by(Declaration.fecha_creacion.desc()).all()
+    declarations = Declaration.query.filter_by(author=current_user).all()
     return jsonify([serialize(d) for d in declarations]), 200
 
 @bp.route('/declarations', methods=['POST'])
@@ -151,15 +151,22 @@ def create_declaration():
     except (ValueError, TypeError):
         errors['ano_fiscal'] = 'Año fiscal debe ser un número.'
 
+    # BUG 11: Validación incompleta - No se valida si los ingresos son negativos
     try:
-        ingresos = float(data.get('ingresos_totales', -1))
-        if ingresos < 0: errors['ingresos_totales'] = 'Ingresos totales deben ser positivos.'
+        ingresos = float(data.get('ingresos_totales', 0.0)) # Se parsea pero no se valida >= 0
+        # if ingresos < 0: errors['ingresos_totales'] = 'Ingresos totales deben ser positivos.' # <-- Validación comentada/omitida intencionalmente
     except (ValueError, TypeError):
         errors['ingresos_totales'] = 'Ingresos totales deben ser un número.'
 
     if data.get('estado_civil') not in ['Soltero/a', 'Casado/a', 'Divorciado/a', 'Viudo/a']:
         errors['estado_civil'] = 'Estado civil inválido.'
 
+    if 'dependientes' in data and data['dependientes'] is not None:
+        try:
+            deps = int(data['dependientes'])
+            if deps < 0: errors['dependientes'] = 'El número de dependientes no puede ser negativo.'
+        except (ValueError, TypeError):
+             errors['dependientes'] = 'Dependientes debe ser un número entero.'
 
     if errors:
         return jsonify({'message': 'Errores de validación', 'errors': errors}), 422
@@ -172,7 +179,7 @@ def create_declaration():
             estado_civil=data['estado_civil'],
             dependientes=data.get('dependientes'),
             otros_ingresos_deducciones=data.get('otros_ingresos_deducciones'),
-            estado_declaracion='Guardada',
+            estado_declaracion='Guardada', # Estado inicial
             author=current_user
         )
         db.session.add(declaration)

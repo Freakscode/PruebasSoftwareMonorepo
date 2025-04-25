@@ -1,14 +1,32 @@
+import type { FC, MouseEvent, FocusEvent } from 'react';
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminUsersPage from './pages/AdminUsersPage';
+import NewDeclarationPage from './pages/NewDeclarationPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 
 function App() {
   const { user, logout } = useAuth();
+
+  const handleMouseOver = (e: MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = 'var(--color-secondary-dark)';
+  };
+
+  const handleMouseOut = (e: MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = 'var(--color-secondary)';
+  };
+
+  const handleFocus = (e: FocusEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = 'var(--color-secondary-dark)';
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = 'var(--color-secondary)';
+  };
 
   return (
     <>
@@ -24,20 +42,24 @@ function App() {
         <Link to="/">Inicio</Link>
         {!user && <Link to="/login">Login</Link>}
         {user && !user.es_admin && <Link to="/dashboard">Mi Panel</Link>}
-        {user && user.es_admin && <Link to="/admin/users">Admin Usuarios</Link>}
-        {user && <button 
-                    onClick={logout} 
-                    style={{ 
-                        marginLeft: 'auto', 
+        {user && !user.es_admin && <Link to="/nueva-declaracion">Nueva Declaración</Link>}
+        {user?.es_admin && <Link to="/admin/users">Admin Usuarios</Link>}
+        {user && <button
+                    type="button"
+                    onClick={logout}
+                    style={{
+                        marginLeft: 'auto',
                         backgroundColor: 'var(--color-secondary)',
-                        padding: '0.4em 0.8em' 
+                        padding: '0.4em 0.8em'
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--color-secondary-dark)'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--color-secondary)'} 
-                 >Cerrar Sesión</button>} 
+                    onMouseOver={handleMouseOver}
+                    onFocus={handleFocus}
+                    onMouseOut={handleMouseOut}
+                    onBlur={handleBlur}
+                 >Cerrar Sesión</button>}
       </nav>
 
-      <div className="container"> 
+      <div className="container">
         <h1>Simulador de Impuestos (React Frontend)</h1>
         <Routes>
           <Route path="/" element={<div>Página de Inicio Pública</div>} />
@@ -45,6 +67,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/nueva-declaracion" element={<NewDeclarationPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
           </Route>
 
