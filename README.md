@@ -68,13 +68,31 @@ Sigue estos pasos para poner en marcha la aplicación en tu entorno local.
     # y luego usar 'pip install -r requirements.txt')
     ```
 
-4.  **Ejecuta el servidor de desarrollo Flask:**
+4.  **Crea el archivo de configuración `.env`:**
+    Antes de ejecutar el servidor por primera vez, crea un archivo llamado `.env` en esta carpeta (`backend/`). Este archivo es crucial para configurar la base de datos y la seguridad.
+
+    *   **Crea el archivo:** Usa un editor o el comando `echo. > .env` (en Windows Cmd/Powershell) o `touch .env` (en Linux/WSL/macOS).
+    *   **Añade el siguiente contenido:**
+        ```dotenv
+        # backend/.env
+
+        # Clave secreta para Flask (cambiar en producción)
+        # Puedes generar una con: python -c 'import secrets; print(secrets.token_hex())'
+        SECRET_KEY='una_clave_secreta_muy_segura_y_aleatoria_para_desarrollo'
+
+        # URL de la base de datos SQLite
+        # El archivo 'app.db' se creará en backend/ la primera vez
+        DATABASE_URL='sqlite:///app.db'
+        ```
+    *   **Importante:** Asegúrate de que el archivo se llame exactamente `.env` y esté en la carpeta `backend/`.
+
+5.  **Ejecuta el servidor de desarrollo Flask:**
     ```powershell
     flask --app __init__:create_app --debug run
     ```
     *   El flag `--debug` activa el modo de depuración (recarga automática y más información de errores).
     *   La API estará disponible en `http://localhost:5000` (o el puerto que indique Flask).
-    *   Al iniciar por primera vez, se creará la base de datos (`instance/database.db`) y un usuario administrador (`admin@example.com` / `adminpassword`).
+    *   Al iniciar por primera vez (y si existe el `.env`), se creará la base de datos (`app.db`) y un usuario administrador (`admin@example.com` / `adminpassword`).
 
 #### Crear Usuarios en el Backend (Flask Shell)
 
