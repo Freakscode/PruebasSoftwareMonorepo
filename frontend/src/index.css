@@ -80,7 +80,8 @@ button:disabled {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="number"] {
+input[type="number"],
+select {
   font-family: var(--font-family-sans);
   padding: 0.75em;
   border: 1px solid var(--color-border);
@@ -97,7 +98,7 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(168, 159, 207, 0.3); /* Sombra suave morada */
 }
 
-label {
+label, select {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
