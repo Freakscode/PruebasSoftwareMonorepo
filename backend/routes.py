@@ -64,8 +64,9 @@ def logout_api():
 
 @bp.route('/register', methods=['POST'])
 def register_api():
-    if current_user.is_authenticated:
-        return jsonify({'message': 'Ya estás autenticado.'}), 400
+    # Si el usuario está autenticado y no es admin, no puede crear otros usuarios
+    if current_user.is_authenticated and not current_user.es_admin:
+        return jsonify({'message': 'Ya estás autenticado. No puedes crear otros usuarios.'}), 400
 
     data = request.get_json()
     if not data:
@@ -86,13 +87,18 @@ def register_api():
         return jsonify({'message': 'Errores de validación', 'errors': errors}), 422
 
     try:
+        # Solo los administradores pueden crear otros administradores
+        es_admin = False
+        if current_user.is_authenticated and current_user.es_admin and 'es_admin' in data:
+            es_admin = bool(data['es_admin'])
+        
         user = User(
             nombre_completo=data['nombre_completo'],
             tipo_documento=data['tipo_documento'],
             numero_documento=data['numero_documento'],
             correo_electronico=data['correo_electronico'],
             estado='activo',
-            es_admin=False
+            es_admin=es_admin
         )
         user.set_password(data['password'])
         db.session.add(user)
@@ -200,7 +206,13 @@ def admin_get_users():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
 
+    # Imprimir para depuración
+    print(f"Obteniendo usuarios - Página: {page}, Por página: {per_page}, Búsqueda: '{search_query}'")
+    
+    # Query base
     query = User.query
+    
+    # Aplicar filtro de búsqueda si existe
     if search_query:
         search_term = f'%{search_query}%'
         query = query.filter(
@@ -208,19 +220,44 @@ def admin_get_users():
             User.correo_electronico.ilike(search_term) |
             User.numero_documento.ilike(search_term)
         )
-
-    pagination = query.order_by(User.id.asc()).paginate(page=page, per_page=per_page, error_out=False)
-    users = pagination.items
-
-    return jsonify({
-        'users': [serialize(u) for u in users],
-        'total': pagination.total,
-        'page': pagination.page,
-        'per_page': pagination.per_page,
-        'pages': pagination.pages,
-        'has_next': pagination.has_next,
-        'has_prev': pagination.has_prev
-    }), 200
+    
+    # Obtener todos los usuarios para verificar que existen
+    all_users = query.all()
+    print(f"Total de usuarios encontrados: {len(all_users)}")
+    for user in all_users:
+        print(f"Usuario: {user.id} - {user.nombre_completo} - {user.correo_electronico}")
+    
+    # Intentar paginar con manejo de error
+    try:
+        # Compatibilidad con diferentes versiones de SQLAlchemy
+        pagination = query.order_by(User.id.asc()).paginate(page=page, per_page=per_page, error_out=False)
+        users = pagination.items
+        
+        response = {
+            'users': [serialize(u) for u in users],
+            'total': pagination.total,
+            'page': pagination.page,
+            'per_page': pagination.per_page,
+            'pages': pagination.pages,
+            'has_next': pagination.has_next,
+            'has_prev': pagination.has_prev
+        }
+    except Exception as e:
+        # Si hay error en la paginación, retornar todos los usuarios
+        print(f"Error en paginación: {e}")
+        users = query.order_by(User.id.asc()).all()
+        
+        response = {
+            'users': [serialize(u) for u in users],
+            'total': len(users),
+            'page': 1,
+            'per_page': len(users),
+            'pages': 1,
+            'has_next': False,
+            'has_prev': False
+        }
+    
+    return jsonify(response), 200
 
 @bp.route('/admin/users/<int:user_id>', methods=['GET'])
 @login_required

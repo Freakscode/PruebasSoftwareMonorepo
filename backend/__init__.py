@@ -18,6 +18,9 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///' + os.path.join(app.instance_path, 'database.db'))
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    # Imprimir la ruta de la base de datos para depuración
+    print(f"Ruta absoluta de la BD: {os.path.abspath(app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', ''))}")
+
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -39,6 +42,7 @@ def create_app():
     from . import routes
     app.register_blueprint(routes.bp, url_prefix='/api')
 
+    # Asegurarse de que la creación de tablas y el usuario admin se hagan dentro del contexto de la aplicación
     with app.app_context():
         db.create_all()
         create_admin_user()
@@ -54,10 +58,10 @@ def create_admin_user():
             tipo_documento='ADMIN',
             numero_documento='00000000',
             correo_electronico='admin@example.com',
-            password_hash=generate_password_hash('adminpassword'),
             estado='activo',
             es_admin=True
         )
+        admin_user.set_password('adminpassword')
         db.session.add(admin_user)
         db.session.commit()
         print("Usuario administrador por defecto creado.")
