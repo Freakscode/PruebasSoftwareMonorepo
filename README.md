@@ -109,7 +109,7 @@ Aunque los usuarios pueden registrarse a través de la API (`POST /api/register`
     ```
 4.  **Inicia el shell de Flask:**
     ```powershell
-    flask shell
+    flask --app __init__:shell 
     ```
     Esto te dará un intérprete de Python con el contexto de la aplicación cargado.
 
