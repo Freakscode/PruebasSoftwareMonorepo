@@ -278,17 +278,17 @@ def admin_update_user(user_id):
         return jsonify({'message': 'No se recibieron datos JSON.'}), 400
 
     errors = {}
-    if 'nombre_completo' in data and not data['nombre_completo']:
-        errors['nombre_completo'] = 'El nombre completo no puede estar vacío.'
+    # if 'nombre_completo' in data and not data['nombre_completo']:
+    #     errors['nombre_completo'] = 'El nombre completo no puede estar vacío.'
     if 'correo_electronico' in data:
         if not data['correo_electronico']:
             errors['correo_electronico'] = 'El correo electrónico no puede estar vacío.'
         elif data['correo_electronico'] != user_to_edit.correo_electronico and User.query.filter_by(correo_electronico=data['correo_electronico']).first():
             errors['correo_electronico'] = 'El correo electrónico ya está en uso.'
 
-    if 'password' in data and data['password']:
-        if len(data['password']) < 8:
-            errors['password'] = 'La nueva contraseña debe tener al menos 8 caracteres.'
+    # if 'password' in data and data['password']:
+    #     if len(data['password']) < 8:
+    #         errors['password'] = 'La nueva contraseña debe tener al menos 8 caracteres.'
 
     if 'estado' in data and data['estado'] not in ['activo', 'inactivo']:
         errors['estado'] = 'Estado inválido.'

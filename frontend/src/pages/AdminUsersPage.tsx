@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import apiClient from '../api/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -48,6 +49,8 @@ const AdminUsersPage: React.FC = () => {
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [formSuccess, setFormSuccess] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -441,7 +444,7 @@ const AdminUsersPage: React.FC = () => {
                       <td style={tableCellStyle}>
                         {userItem.es_admin ? 'Administrador' : 'Usuario'}
                       </td>
-                      <td style={tableCellStyle}>
+                      <td  style={tableCellStyle} className='formUsersButtons'>
                         <button
                           onClick={() => handleToggleStatus(userItem.id)}
                           style={{
@@ -455,6 +458,19 @@ const AdminUsersPage: React.FC = () => {
                           disabled={userItem.id === user.id}
                         >
                           {userItem.estado === 'activo' ? 'Desactivar' : 'Activar'}
+                        </button>
+                        <button
+                        onClick={() => navigate("/admin/update-user",{state:{id: userItem.id}})}
+                          style={{
+                            color: 'white',
+                            border: 'none',
+                            padding: '5px 10px',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                        
+                          Editar
                         </button>
                       </td>
                     </tr>

@@ -150,3 +150,9 @@ label, select {
   margin-top: 1rem;
   
 }
+
+.formUsersButtons{
+  display: flex;
+  justify-content: space-around;
+
+}

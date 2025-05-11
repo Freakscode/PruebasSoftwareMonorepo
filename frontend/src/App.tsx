@@ -11,6 +11,7 @@ import { useAuth } from './context/AuthContext';
 import ForgotPassword from './pages/ForgotPasswordPage';
 import ResetPassword from './pages/ResetPasswordPage';
 import RegisterPage from './pages/RegisterPage';
+import UpdateUserPage from './pages/UpdateUserPage';
 
 function App() {
   const { user, logout } = useAuth();
@@ -78,6 +79,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/nueva-declaracion" element={<NewDeclarationPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/update-user" element={<UpdateUserPage />} />
           </Route>
 
           <Route path="*" element={<div>404 - Página no encontrada</div>} />

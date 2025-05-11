@@ -12,7 +12,7 @@ def create_app():
     """Función de fábrica para crear la aplicación Flask."""
     app = Flask(__name__, instance_relative_config=True, static_folder=None, template_folder=None)
 
-    CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+    CORS(app, supports_credentials=True, origins=["*","http://localhost:5173"])
 
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'una_clave_secreta_por_defecto_cambiar_en_prod')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///' + os.path.join(app.instance_path, 'database.db'))
